@@ -40,7 +40,7 @@ function userjs_init(_win, _userjs_source)
 { /* zał: gm_api, userjs - wczytywane jako string - sposob na izolacje zmiennej USERJS i dostep do niej z gm api (i z kolei gm_api z userjs) */
  function load_userjs()
  {
-  download_file("https://", function(api_functions)
+  download_file("https://raw.github.com/piotrex/Bookmarkleter/unstable/build/alt-api.js", function(api_functions)
   {
    var script_to_loaded = '(function(){' + 'var USERJS=' + JSON.stringify(USERJS) + ';' + api_functions + _userjs_source + '})();';
    /*alert(script_to_loaded);*/
@@ -100,7 +100,7 @@ function main() /*  uruchomienie bookmarkletu */
     try {
      win_frame = window.frames[i];
      /*  access to document denied when frame is other domain */
-     checker = win_frame.document.location; /*  check access permissions   */
+     checker = win_frame.document.location; /*  check access permissions	 */
      success = true;
     }
     catch (ex){
