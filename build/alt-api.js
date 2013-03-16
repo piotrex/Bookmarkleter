@@ -151,7 +151,7 @@ function GM_xmlhttpRequest(_details, /*for cors-anywhere*/ _redirectCount) /* to
   if(typeof _details.timeout !== 'undefined') xhr.timeout = _details.timeout;;
   function get_url(_org_url)
   {
-   /*  var protocol_re = /([a-z]+:\/\/)?(.*)/;  */ /*  [1]-protocol+//, [2]-rest */
+   /*  var protocol_re = /([a-z]+:\/\/)?(.*)/;	*/ /*  [1]-protocol+//, [2]-rest */
    /*  var re_result = protocol_re.exec(_org_url); */
    /*  return "http://www.corsproxy.com/" + re_result[2]; */
    /*  for cors-anywhere */
