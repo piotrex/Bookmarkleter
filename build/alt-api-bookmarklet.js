@@ -36,7 +36,7 @@ function download_file(_url, _callback_success) /*  ew. TO DO: nie wiem czy cors
  };
  xhr.onerror = function () /*  readystate == 4 , error network level  or  cross-domain error */
  {
-  alert("onerror"); /*  to do */
+  alert(url_get+"\n"+"onerror"); /*  to do */
  };
  xhr.open("GET", url_get, /* async = */ true);
  xhr.send();
