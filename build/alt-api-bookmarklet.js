@@ -48,7 +48,7 @@ function userjs_init(_win, _userjs_source)
   download_file("https://raw.github.com/piotrex/Bookmarkleter/unstable/build/alt-api.js", function(api_functions)
   {
    var script_to_loaded = '(function(){' + 'var USERJS=' + JSON.stringify(USERJS) + ';' + api_functions + _userjs_source + '})();';
-   /*alert(script_to_loaded);*/
+   alert(script_to_loaded);
    eval(script_to_loaded);
   });
  }
