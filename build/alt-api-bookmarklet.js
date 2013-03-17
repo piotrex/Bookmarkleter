@@ -26,8 +26,13 @@ function download_file(_url, _callback_success) /*  ew. TO DO: nie wiem czy cors
  var url_get = "http://www.corsproxy.com/" + re_result[2];
  xhr.onload = function () /*  readyState == 4 and success */
  {
-  if(this.status == 200)
+  switch(this.status)
+  {
+  case 200:
    _callback_success(this.responseText);
+  default:
+   alert(url_get+"\n" + this.status + " " + this.statusText);
+  }
  };
  xhr.onerror = function () /*  readystate == 4 , error network level  or  cross-domain error */
  {
