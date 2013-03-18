@@ -40,13 +40,13 @@ function get_file_by_jsonp(_url, _call_success, _call_failed, _attempts_number)
   switch(http_error_code)
   {
   case 200:
-   _call_success(_data)
+   _call_success(_data);
    break;
   default:
    if(attempts_number > 0) /*try again*/
    {
     attempts_number--;
-    get_file_by_jsonp(_url, _call_success, _call_failed, _attempts_number)
+    get_file_by_jsonp(_url, _call_success, _call_failed, _attempts_number);
    }
    else
    {
@@ -91,6 +91,7 @@ function download_file(_url, _callback_success) /*  ew. TO DO: nie wiem czy cors
   {
   case 200:
    _callback_success(this.responseText);
+   break;
   default:
    alert(url_get+"\n" + this.status + " " + this.statusText);
   }
@@ -110,14 +111,14 @@ function userjs_init(_win, _userjs_source)
    "https://raw.github.com/piotrex/Bookmarkleter/unstable/build/alt-api.js",
    function(data)
    {
-    var api_functions = data.contents
+    var api_functions = data.contents;
     var script_to_loaded = '(function(){' + 'var USERJS=' + JSON.stringify(USERJS) + ';' + api_functions + _userjs_source + '})();';
     alert(script_to_loaded);
     eval(script_to_loaded);
    },
    function(data)
    {
-    alert("load " + data.status.url + "\n" + "data.status.httpcode");
+    alert("load " + data.status.url + "\n" + data.status.httpcode);
    },
    3
   );
@@ -156,17 +157,11 @@ function userjs_init(_win, _userjs_source)
 /*  REQUIRE: userjs_init, USERJS */
 /*  ew. TO DO: zapewnienie cichej aktualizacji bookmarkletów (by nie trzebabyło ich reistalować) */
 function main() /*  uruchomienie bookmarkletu */
-{/*  to do: lepsza nazwa userjs source; obsługa błędu pobrania, reakcja na pobranie;  */
- window.catch_downloaded_file = function(_data)/*  wykonywane po próbie pobrania */
- {
-  if(typeof catch_downloaded_file.counter === 'undefined')
-   catch_downloaded_file.counter = 1;
-  else
-   catch_downloaded_file.counter ++;
-  var http_error_code = _data.status.http_code;
-  switch(http_error_code)
+{/*  to do: lepsza nazwa userjs source */
+ get_file_by_jsonp(
+  API_FUNCTIONS_URL,
+  function(_data)
   {
-  case 200:
    var source_of_userjs = _data.contents;
    userjs_init(window, source_of_userjs);
    var win_frame, success, checker;
@@ -184,25 +179,14 @@ function main() /*  uruchomienie bookmarkletu */
     if(success)
      userjs_init(win_frame, source_of_userjs); /*  tekst jest przekazywany jako referencja */
    }
-  break;
-  default: /* often error on uso */
-   if(catch_downloaded_file.counter <= 10) /*try again*/
-   {
-    var new_script = document.createElement("script");
-    new_script.src = 'http://whateverorigin.org/get?url=' + encodeURIComponent(USERJS.userjs_url) + '&callback=catch_downloaded_file';
-    document.head.appendChild(new_script);
-   }
-   else
-   {
-    alert('error download file '+USERJS.userjs_url+' \n '+ http_error_code);
-    throw null;
-   }
-  break;
-  }
- };
- var new_script = document.createElement("script");
- new_script.src = 'http://whateverorigin.org/get?url=' + encodeURIComponent(USERJS.userjs_url) + '&callback=catch_downloaded_file';
- document.head.appendChild(new_script);
+  },
+  function(data)
+  {
+   alert("error download file " + data.status.url + "\n" + data.status.httpcode);
+   throw null;
+  },
+  5 /* uso often errors happens*/
+ );
 }
  main();
 }
