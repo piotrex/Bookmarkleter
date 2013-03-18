@@ -7,7 +7,7 @@ function randomString(length, chars)
   result += chars[Math.round(Math.random() * (chars.length - 1))];
  return result;
 }
-/* data sending to callback functions:
+/* JSON sending to callback functions:
 
 {
 
@@ -159,7 +159,7 @@ function userjs_init(_win, _userjs_source)
 function main() /*  uruchomienie bookmarkletu */
 {/*  to do: lepsza nazwa userjs source */
  get_file_by_jsonp(
-  API_FUNCTIONS_URL,
+  USERJS.userjs_url,
   function(_data)
   {
    var source_of_userjs = _data.contents;
