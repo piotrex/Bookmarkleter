@@ -1,6 +1,67 @@
 function bookmarklet(USERJS)
 {
+function randomString(length, chars)
+{
+ var result = '';
+ for (var i = length; i > 0; --i)
+  result += chars[Math.round(Math.random() * (chars.length - 1))];
+ return result;
+}
+/* data sending to callback functions:
+
+{
+
+    "contents": "..."
+
+    "status": {
+
+        "url": "http://translate.google.com/",
+
+        "content_type": "text/html; charset=ISO-8859-1",
+
+        "http_code": 200
+
+    }
+
+}
+
+*/
+function get_file_by_jsonp(_url, _call_success, _call_failed, _attempts_number)
+{
+ /* get callback name */
+ var callback_name;
+ do {
+  var callback_name = "callback_"+randomString(5, 'abcdefghijklmnopqrstuvwxyz');
+ } while ( typeof window[callback_name] !== 'undefined' );
+ /* callback function */
+ window[callback_name] = function(_data)
+ {
+  var http_error_code = _data.status.http_code;
+  switch(http_error_code)
+  {
+  case 200:
+   _call_success(_data)
+   break;
+  default:
+   if(attempts_number > 0) /*try again*/
+   {
+    attempts_number--;
+    get_file_by_jsonp(_url, _call_success, _call_failed, _attempts_number)
+   }
+   else
+   {
+    call_failed(_data);
+   }
+   break;
+  }
+ };
+ /* send jsonp request */
+ var new_script = document.createElement("script");
+ new_script.src = 'http://whateverorigin.org/get?url=' + encodeURIComponent(_url) + '&callback='+callback_name;
+ document.head.appendChild(new_script);
+}
  /* Require: USERJS */
+/* BUG przekierowywuje corsproxy.com/... --> raw.github.com/... */
 function load_script(_win, _url)
 {
  var new_script = _win.document.createElement('script');
@@ -19,7 +80,7 @@ function call_func_when_processed_all(to_processed_array, to_run_next, _start_co
 }
 /*  to do: gdy niepowodzenie wczytania resource, require */
 function download_file(_url, _callback_success) /*  ew. TO DO: nie wiem czy corsproxy bedzie działać z ftp */
-{
+{ /* TO DO: corsproxy miał problemy z protokołem https (przy https://raw.github.com )*/
  var xhr = new XMLHttpRequest();
  var protocol_re = /([a-z]+:\/\/)?(.*)/; /*  [1]-protocol, [2]-rest */
  var re_result = protocol_re.exec(_url);
@@ -45,12 +106,21 @@ function userjs_init(_win, _userjs_source)
 { /* zał: gm_api, userjs - wczytywane jako string - sposob na izolacje zmiennej USERJS i dostep do niej z gm api (i z kolei gm_api z userjs) */
  function load_userjs()
  {
-  download_file("https://raw.github.com/piotrex/Bookmarkleter/unstable/build/alt-api.js", function(api_functions)
-  {
-   var script_to_loaded = '(function(){' + 'var USERJS=' + JSON.stringify(USERJS) + ';' + api_functions + _userjs_source + '})();';
-   alert(script_to_loaded);
-   eval(script_to_loaded);
-  });
+  get_file_by_jsonp(
+   "https://raw.github.com/piotrex/Bookmarkleter/unstable/build/alt-api.js",
+   function(data)
+   {
+    var api_functions = data.contents
+    var script_to_loaded = '(function(){' + 'var USERJS=' + JSON.stringify(USERJS) + ';' + api_functions + _userjs_source + '})();';
+    alert(script_to_loaded);
+    eval(script_to_loaded);
+   },
+   function(data)
+   {
+    alert("load " + data.status.url + "\n" + "data.status.httpcode");
+   },
+   3
+  );
  }
 /*  zał: wczytywane asynchronicznie (bo wydajnosć) */
  function load_resources() /*  .. i poźniej userjs */
