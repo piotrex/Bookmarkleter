@@ -1,3 +1,4 @@
+/* funkcja core uruchamiana w bookmarklecie */
 function bookmarklet(USERJS)
 {
 function randomString(length, chars)
