@@ -34,7 +34,7 @@ function GM_addStyle(_style) /* full support */
 }
 window.unsafeWindow = window; /* to do: (pomysł) unsafeWindow w celu ominiecia cross-domain: mozna w getterze/setterze sprawdzać czy jest crossdomain jak tak to dawać warning (zakładanie jeśli crossdomain to w celu ominiecia unsafe.. jest używane */
 /* from demo of https://github.com/Rob--W/cors-anywhere/ */
-function GM__xhr_onload_handle_and_redirect(
+function GM__xhr_onload_handle_and_redirect( /* TO DO: shorten func name*/
  _xhr, /* dane przysyłane wraz otrzymaniem odpowiedzi (onload) */
  _request_data, /* dane requestu wysyłanego - wysyłane do _request_sender */
  _request_sender, /*przyjmuje dane requestu zamieniajac url na cors-anywhere.herokuapp.com*/
@@ -119,7 +119,8 @@ function GM_xmlhttpRequest(_details, /*for cors-anywhere*/ _redirectCount) /* to
      }, _redirectCount);
     }
     else
-     /*_details.onreadystatechange()*/;
+    { /*_details.onreadystatechange();*/
+    }
    };
   }
   else if (typeof _details.onload !== 'undefined' && typeof _details.onreadystatechange === 'undefined' )
