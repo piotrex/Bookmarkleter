@@ -156,8 +156,8 @@ function GM_xmlhttpRequest(_details, /*for cors-anywhere*/ _redirectCount) /* to
    /*  return "http://www.corsproxy.com/" + re_result[2]; */
    /*  for cors-anywhere */
    var protocol_re = /([a-z]+):\/\/?(.*)/; /*  [1]-protocol, [2]-rest */
-   var protocol = protocol_re.exec(_org_url);
-   return protocol+'/* cors-anywhere.herokuapp.com/'+_org_url;
+   var protocol = protocol_re.exec(_org_url)[1];
+   return protocol+'//cors-anywhere.herokuapp.com/'+_org_url;
   }
   xhr.open(
    _details.method,
