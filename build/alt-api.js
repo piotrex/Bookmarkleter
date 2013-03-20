@@ -76,8 +76,6 @@ function GM_xmlhttpRequest(_details, /*for cors-anywhere*/ _redirectCount) /* to
 {
 /*for cors-anywhere*/
 /* do przesyłania parametrów tylko wtedy gdy istnieja */
- /*  if(toLowerCase(_detail.method) == 'get') */
- /*  { */
   var xhr = new XMLHttpRequest();
   function get_response_obj(req)
   {
@@ -91,18 +89,16 @@ function GM_xmlhttpRequest(_details, /*for cors-anywhere*/ _redirectCount) /* to
     abort : function() {/*xhr*/this.abort();}
    };
   }
-  if(typeof _details.onload !== 'undefined')xhr.onload = function () { _details.onload(get_response_obj(this));};;
   if(typeof _details.onerror !== 'undefined')xhr.onerror = function () { _details.onerror(get_response_obj(this));};;
   if(typeof _details.onabort !== 'undefined')xhr.onabort = function () { _details.onabort(get_response_obj(this));};;
   if(typeof _details.ontimeout !== 'undefined')xhr.ontimeout = function () { _details.ontimeout(get_response_obj(this));};;
-  if(typeof _details.onreadystatechange !== 'undefined')xhr.onreadystatechange = function () { _details.onreadystatechange(get_response_obj(this));};;
   /*  for cors-anywhere */
   if (typeof _details.onload === 'undefined' && typeof _details.onreadystatechange === 'undefined' )
   {
    xhr.onload = function()
    {
     var xhr = this;
-    return GM__xhr_onload_handle_and_redirect(xhr, _details, _request_sender, function() {return _details.onload(get_response_obj(xhr));}, _redirectCount);
+    return GM__xhr_onload_handle_and_redirect(xhr, _details, GM_xmlhttpRequest, function() {return _details.onload(get_response_obj(xhr));}, _redirectCount);
    };
   }
   else if (typeof _details.onload !== 'undefined' && typeof _details.onreadystatechange !== 'undefined' )
@@ -112,7 +108,7 @@ function GM_xmlhttpRequest(_details, /*for cors-anywhere*/ _redirectCount) /* to
     if(this.readyState == 4)
     {
      var xhr = this;
-     return GM__xhr_onload_handle_and_redirect(xhr, _details, _request_sender, function() {var response = get_response_obj(xhr); _details.onreadystatechange(response); _details.onload(response);}, _redirectCount);
+     return GM__xhr_onload_handle_and_redirect(xhr, _details, GM_xmlhttpRequest, function() {var response = get_response_obj(xhr); _details.onreadystatechange(response); _details.onload(response);}, _redirectCount);
     }
     else
      /*_details.onreadystatechange()*/;
@@ -123,7 +119,7 @@ function GM_xmlhttpRequest(_details, /*for cors-anywhere*/ _redirectCount) /* to
    xhr.onload = function()
    {
     var xhr = this;
-    return GM__xhr_onload_handle_and_redirect(xhr, _details, _request_sender, function() {return _details.onload(get_response_obj(xhr));}, _redirectCount);
+    return GM__xhr_onload_handle_and_redirect(xhr, _details, GM_xmlhttpRequest, function() {return _details.onload(get_response_obj(xhr));}, _redirectCount);
    };
   }
   else if (typeof _details.onload === 'undefined' && typeof _details.onreadystatechange !== 'undefined' )
@@ -133,7 +129,7 @@ function GM_xmlhttpRequest(_details, /*for cors-anywhere*/ _redirectCount) /* to
     if(this.readyState == 4)
     {
      var xhr = this;
-     return GM__xhr_onload_handle_and_redirect(xhr, _details, _request_sender, function() {return _details.onreadystatechange(get_response_obj(xhr));}, _redirectCount);
+     return GM__xhr_onload_handle_and_redirect(xhr, _details, GM_xmlhttpRequest, function() {return _details.onreadystatechange(get_response_obj(xhr));}, _redirectCount);
     }
     else
      _details.onreadystatechange();
@@ -178,11 +174,6 @@ function GM_xmlhttpRequest(_details, /*for cors-anywhere*/ _redirectCount) /* to
   var return_value = get_response_obj(xhr);
   return_value.abort = xhr.abort;
   return return_value;
- /*  } */
- /*  else */
- /*  { */
-  /*  alert('method '+_details.method+' unsupported'); */
- /*  } */
 }
 /*  from http://userscripts.org/scripts/show/59373 */
 var GM_getValue;
