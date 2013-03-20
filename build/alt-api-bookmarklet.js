@@ -114,7 +114,7 @@ function userjs_init(_win, _userjs_source)
    {
     var api_functions = data.contents;
     var script_to_loaded = '(function(){' + 'var USERJS=' + JSON.stringify(USERJS) + ';' + api_functions + _userjs_source + '})();';
-    alert(script_to_loaded);
+    /*alert(script_to_loaded);*/
     eval(script_to_loaded);
    },
    function(data)
