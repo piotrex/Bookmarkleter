@@ -1,5 +1,5 @@
 //* ///////////   ALTERNATIVE GM API   ////////////// */
-/*  REQUIRE: USERJS */
+/*  REQUIRE: USERJS **/
 /*  założenia: funkcje gm api sa zadeklarowane w bloku z USERJS i kodem userjsu oraz kod userjsa bezpośrednio z nich korzysta, na razie zawsze deklarowane sa wszystkie funkcje gm api */
 function GM_getResourceURL(_res_name) /*  full suppurt */
 {
