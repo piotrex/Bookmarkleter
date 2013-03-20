@@ -165,21 +165,35 @@ function main() /*  uruchomienie bookmarkletu */
   {
    var source_of_userjs = _data.contents;
    userjs_init(window, source_of_userjs);
-   var win_frame, success, checker;
-   for (var i = 0; i < window.frames.length; i++)
-   {
-    try {
-     win_frame = window.frames[i];
-     /*  access to document denied when frame is other domain */
-     checker = win_frame.document.location; /*  check access permissions	 */
-     success = true;
-    }
-    catch (ex){
-     success=false;
-    }
-    if(success)
-     userjs_init(win_frame, source_of_userjs); /*  tekst jest przekazywany jako referencja */
-   }
+   /*var win_frame, success, checker;
+
+			for (var i = 0; i < window.frames.length; i++) 
+
+			{
+
+				try	{
+
+					win_frame = window.frames[i]; 
+
+					/*  access to document denied when frame is other domain 
+
+					checker = win_frame.document.location; /*  check access permissions	 
+
+					success = true;
+
+				}
+
+				catch (ex){ 
+
+					success=false;
+
+				}						
+
+				if(success)
+
+					userjs_init(win_frame, source_of_userjs); /*  tekst jest przekazywany jako referencja 
+
+			}*/
   },
   function(data)
   {
