@@ -98,7 +98,10 @@ function GM_xmlhttpRequest(_details, /*for cors-anywhere*/ _redirectCount) /* to
    xhr.onload = function()
    {
     var xhr = this;
-    return GM__xhr_onload_handle_and_redirect(xhr, _details, GM_xmlhttpRequest, function() {return _details.onload(get_response_obj(xhr));}, _redirectCount);
+    return GM__xhr_onload_handle_and_redirect(xhr, _details, GM_xmlhttpRequest, function ()
+    {
+     return _details.onload(get_response_obj(xhr));
+    }, _redirectCount);
    };
   }
   else if (typeof _details.onload !== 'undefined' && typeof _details.onreadystatechange !== 'undefined' )
@@ -108,7 +111,12 @@ function GM_xmlhttpRequest(_details, /*for cors-anywhere*/ _redirectCount) /* to
     if(this.readyState == 4)
     {
      var xhr = this;
-     return GM__xhr_onload_handle_and_redirect(xhr, _details, GM_xmlhttpRequest, function() {var response = get_response_obj(xhr); _details.onreadystatechange(response); _details.onload(response);}, _redirectCount);
+     return GM__xhr_onload_handle_and_redirect(xhr, _details, GM_xmlhttpRequest, function ()
+     {
+      var response = get_response_obj(xhr);
+      _details.onreadystatechange(response);
+      _details.onload(response);
+     }, _redirectCount);
     }
     else
      /*_details.onreadystatechange()*/;
@@ -119,7 +127,10 @@ function GM_xmlhttpRequest(_details, /*for cors-anywhere*/ _redirectCount) /* to
    xhr.onload = function()
    {
     var xhr = this;
-    return GM__xhr_onload_handle_and_redirect(xhr, _details, GM_xmlhttpRequest, function() {return _details.onload(get_response_obj(xhr));}, _redirectCount);
+    return GM__xhr_onload_handle_and_redirect(xhr, _details, GM_xmlhttpRequest, function ()
+    {
+     return _details.onload(get_response_obj(xhr));
+    }, _redirectCount);
    };
   }
   else if (typeof _details.onload === 'undefined' && typeof _details.onreadystatechange !== 'undefined' )
@@ -129,7 +140,10 @@ function GM_xmlhttpRequest(_details, /*for cors-anywhere*/ _redirectCount) /* to
     if(this.readyState == 4)
     {
      var xhr = this;
-     return GM__xhr_onload_handle_and_redirect(xhr, _details, GM_xmlhttpRequest, function() {return _details.onreadystatechange(get_response_obj(xhr));}, _redirectCount);
+     return GM__xhr_onload_handle_and_redirect(xhr, _details, GM_xmlhttpRequest, function ()
+     {
+      return _details.onreadystatechange(get_response_obj(xhr));
+     }, _redirectCount);
     }
     else
      _details.onreadystatechange();
