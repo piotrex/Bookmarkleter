@@ -92,7 +92,6 @@ function GM_xmlhttpRequest(_details, /*for cors-anywhere*/ _redirectCount) /* to
   if(typeof _details.onerror !== 'undefined')xhr.onerror = function () { _details.onerror(get_response_obj(this));};;
   if(typeof _details.onabort !== 'undefined')xhr.onabort = function () { _details.onabort(get_response_obj(this));};;
   if(typeof _details.ontimeout !== 'undefined')xhr.ontimeout = function () { _details.ontimeout(get_response_obj(this));};;
-  /*  for cors-anywhere */
   if (typeof _details.onload === 'undefined' && typeof _details.onreadystatechange === 'undefined' )
   {
    xhr.onload = function()
@@ -162,10 +161,6 @@ function GM_xmlhttpRequest(_details, /*for cors-anywhere*/ _redirectCount) /* to
   if(typeof _details.timeout !== 'undefined') xhr.timeout = _details.timeout;;
   function get_url(_org_url)
   {
-   /*  var protocol_re = /([a-z]+:\/\/)?(.*)/;	*/ /*  [1]-protocol+//, [2]-rest */
-   /*  var re_result = protocol_re.exec(_org_url); */
-   /*  return "http://www.corsproxy.com/" + re_result[2]; */
-   /*  for cors-anywhere */
    var protocol_re = /([a-z]+:)\/\/?(.*)/; /*  [1]-protocol, [2]-rest */
    var protocol = protocol_re.exec(_org_url)[1];
    return protocol+'//cors-anywhere.herokuapp.com/'+_org_url;

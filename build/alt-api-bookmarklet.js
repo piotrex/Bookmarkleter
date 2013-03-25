@@ -30,10 +30,9 @@ function randomString(length, chars)
 function get_file_by_jsonp(_url, _call_success, _call_failed, _attempts_number)
 {
  /* get callback name */
- var callback_name;
- do {
+ var callback_name = "bml_gUt54Dj9";
+ while ( typeof window[callback_name] !== 'undefined' )
   var callback_name = "callback_"+randomString(5, 'abcdefghijklmnopqrstuvwxyz');
- } while ( typeof window[callback_name] !== 'undefined' );
  /* callback function */
  window[callback_name] = function(_data)
  {
@@ -51,10 +50,11 @@ function get_file_by_jsonp(_url, _call_success, _call_failed, _attempts_number)
    }
    else
    {
-    call_failed(_data);
+    _call_failed(_data);
    }
    break;
   }
+  delete window[callback_name];
  };
  /* send jsonp request */
  var new_script = document.createElement("script");
@@ -63,6 +63,18 @@ function get_file_by_jsonp(_url, _call_success, _call_failed, _attempts_number)
 }
  /* Require: USERJS */
 /* BUG przekierowywuje corsproxy.com/... --> raw.github.com/... */
+function error(_msg, _critical)
+{
+ if(_critical)
+ {
+  console.error('bookmarkleter::'+_msg);
+  throw _msg;
+ }
+ else
+ {
+  console.warn('bookmarkleter::'+_msg);
+ {
+}
 function load_script(_win, _url)
 {
  var new_script = _win.document.createElement('script');
@@ -73,9 +85,9 @@ function load_script(_win, _url)
 function call_func_when_processed_all(to_processed_array, to_run_next, _start_counting) /* start counting=true MUSI wystapic */
 {
  if (typeof _start_counting !== 'undefined' && _start_counting === true) /*  variable with default value */
-  call_func_when_processed_all . loaded_counter = 0;
+  call_func_when_processed_all . loaded_counter = 0; /* static variable */
  else
-  call_func_when_processed_all . loaded_counter++; /* static variable */
+  call_func_when_processed_all . loaded_counter++;
  if (call_func_when_processed_all . loaded_counter === to_processed_array.length)
   to_run_next();
 }
